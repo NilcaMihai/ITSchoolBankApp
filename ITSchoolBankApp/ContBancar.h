@@ -17,6 +17,13 @@ private:
 	std::string IBAN;
 public:
 	ContBancar(std::string Nume, std::string Prenume, std::string iban);
+	inline std::string getNume(){ return Nume; }
+	inline std::string getPrenume() { return Prenume; }
+	inline int getSold() { return sold; }
+	inline std::string getIBAN() { return IBAN; }
+	inline void setSoldValue(int value) { sold = value; }
+
+
 	~ContBancar();
 
 };
