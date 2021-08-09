@@ -28,6 +28,10 @@ int main()
             system("CLS");
             itSchoolBank->vizualizareConturi();
             break;
+        case '3':
+            system("CLS");
+            itSchoolBank->modificareCont();
+            break;
         case '9':
             system("CLS");
             std::cout << "Thank you!";
