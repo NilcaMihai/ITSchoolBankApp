@@ -18,6 +18,7 @@ Bank::~Bank()
 
 void Bank::adaugareCont()
 {
+	//tema doar litere din alfabetul latin + - si spatiere
 	system("CLS");
 	std::string nume;
 	std::cout << "Introduceti numele utilizatorului:\n";

@@ -21,7 +21,11 @@ public:
 	inline std::string getPrenume() { return Prenume; }
 	inline int getSold() { return sold; }
 	inline std::string getIBAN() { return IBAN; }
+
+	inline void setNume(std::string nume) { Nume = nume; }
+	inline void setPrenume(std::string prenume) { Prenume = prenume; }
 	inline void setSoldValue(int value) { sold = value; }
+	inline void setIBAN(std::string Iban) { IBAN = Iban; }
 
 
 	~ContBancar();
