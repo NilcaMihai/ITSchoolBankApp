@@ -18,17 +18,50 @@ Bank::~Bank()
 
 void Bank::adaugareCont()
 {
-	//tema doar litere din alfabetul latin + - si spatiere
+	std::cin.ignore();
 	system("CLS");
+
+	bool numeValid = false;
+	bool prenumeValid = false;
 	std::string nume;
-	std::cout << "Introduceti numele utilizatorului:\n";
-	std::cin >> nume;
 	std::string prenume;
-	std::cout << "Introduceti prenumele utilizatorului:\n";
-	std::cin >> prenume;
+
+	while (numeValid == false)
+	{
+		std::cout << "Introduceti numele utilizatorului (folositi doar litere din alfabetul latin):\n";
+		std::getline(std::cin, nume);
+		for (int j = 0; j < nume.length(); ++j)
+		{
+			if ((nume[j] >= 'A' && nume[j] <= 'Z') || (nume[j] >= 'a' && nume[j] <= 'z') || (nume[j] == ' ' || nume[j] == '-'))
+				numeValid = true;
+			else
+			{
+				numeValid = false;
+				break;
+			}
+		}
+	}
+
+	while (prenumeValid == false)
+	{
+		std::cout << "Introduceti prenumele utilizatorului (folositi doar litere din alfabetul latin):\n";
+		std::getline(std::cin, prenume);
+		for (int j = 0; j < prenume.length(); ++j)
+		{
+			if ((prenume[j] >= 'A' && prenume[j] <= 'Z') || (prenume[j] >= 'a' && prenume[j] <= 'z') || (prenume[j] == ' ' || prenume[j] == '-'))
+				prenumeValid = true;
+			else
+			{
+				prenumeValid = false;
+				break;
+			}
+		}
+	}
+
 	std::string iban = createIban();
 	ContBancar* cont = new ContBancar(nume, prenume, iban);
 	m_ConturiBancare.push_back(cont);
+	system("CLS");
 	std::cout << "Finalizare operatiune! Apasa tasta aferenta optiunii dorite:\n";
 	std::cout << "1 -> pentru creearea unui cont.\n";
 	std::cout << "2 -> pentru meniul principal.\n";
@@ -50,7 +83,8 @@ void Bank::vizualizareConturi()
 	std::cout << "Numarul de conturi in banca este: " << m_ConturiBancare.size() << "\n";
 	for (int i = 0; i < m_ConturiBancare.size(); i++)
 	{
-		std::cout << "Contul " << i + 1 << " " << m_ConturiBancare[i]->getNume() + " " + m_ConturiBancare[i]->getPrenume() << "\n";
+		std::cout << "Contul " << i + 1 << ": " << m_ConturiBancare[i]->getNume() + " " + m_ConturiBancare[i]->getPrenume() << "\n";
+		std::cout << "Contul IBAN aferent este: " << m_ConturiBancare[i]->getIBAN() << "\n";
 	}
 	std::cout << "Finalizare operatiune! Apasa tasta aferenta optiunii dorite:\n";
 	std::cout << "1 -> pentru creearea unui cont.\n";
@@ -78,7 +112,7 @@ void Bank::modificareCont()
 	std::string prenume;
 	std::cin >> prenume;
 	ContBancar* temp = nullptr;
-	int foundIndex = 0;
+	/*int foundIndex = 0;*/
 	/*for (int i = 0; i < m_ConturiBancare.size(); i++)
 	{
 		if (nume == m_ConturiBancare[i]->getNume() && prenume == m_ConturiBancare[i]->getPrenume())
@@ -135,8 +169,6 @@ void Bank::modificareCont()
 		char optiune;
 		std::cin >> optiune;
 		m_ConturiBancare.erase(it);
-
-
 
 	}
 
