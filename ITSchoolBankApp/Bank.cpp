@@ -1,9 +1,68 @@
 #include "Bank.h"
+#include <Windows.h>
+#include <vector>
+#include <time.h>
+
+TIP_CONT Bank::alegeMoneda()
+{
+	system("CLS");
+	std::cout << "Alegeti tipul contului pe care il doriti, apasand tasta aferenta:\n";
+	std::cout << "1 - RON\n";
+	std::cout << "2 - EURO\n";
+	std::cout << "3 - DOLAR\n";
+	int optiune;
+	std::cin >> optiune;
+	switch (optiune)
+	{
+	case 1:
+		return TIP_CONT::CONT_RON;
+		break;
+	case 2:
+		return TIP_CONT::CONT_EURO;
+		break;
+	case 3:
+		return TIP_CONT::CONT_DOLAR;
+		break;
+	default:
+		std::cout << "Optiune invalida!\n";
+		Sleep(1500);
+		alegeMoneda();
+	}
+}
 
 std::string Bank::createIban()
 {
-	std::string iban = "123";
-	return iban;
+	std::vector <std::string> conturiIBAN;
+	std::string IBAN[6] = {  };
+
+	TIP_CONT Moneda(alegeMoneda());
+	switch (Moneda)
+	{
+	case TIP_CONT::CONT_RON:
+		IBAN[0] = "RO";
+		break;
+	case TIP_CONT::CONT_EURO:
+		IBAN[0] = "EURO";
+		break;
+	case TIP_CONT::CONT_DOLAR:
+		IBAN[0] = "USD";
+		break;
+	}
+
+	IBAN[1] = std::to_string(rand() % 89 + 10);
+	IBAN[2] = "ITBK";
+	for (int i = 3; i < 6; ++i)
+	{
+		IBAN[i] = std::to_string(rand() % 8999 + 1000);
+	}
+
+	std::string IBANvalid;
+	for (int i = 0; i < 6; ++i)
+	{
+		 IBANvalid += IBAN[i];
+	}
+
+	return IBANvalid;
 }
 
 Bank::Bank()
@@ -36,6 +95,7 @@ void Bank::adaugareCont()
 				numeValid = true;
 			else
 			{
+				std::cout << "Numele nu este valid!\n";
 				numeValid = false;
 				break;
 			}
@@ -52,6 +112,7 @@ void Bank::adaugareCont()
 				prenumeValid = true;
 			else
 			{
+				std::cout << "Prenumele nu este valid!\n";
 				prenumeValid = false;
 				break;
 			}
@@ -61,10 +122,12 @@ void Bank::adaugareCont()
 	std::string iban = createIban();
 	ContBancar* cont = new ContBancar(nume, prenume, iban);
 	m_ConturiBancare.push_back(cont);
+
 	system("CLS");
 	std::cout << "Finalizare operatiune! Apasa tasta aferenta optiunii dorite:\n";
-	std::cout << "1 -> pentru creearea unui cont.\n";
+	std::cout << "1 -> pentru creearea unui alt cont.\n";
 	std::cout << "2 -> pentru meniul principal.\n";
+
 	char optiune;
 	std::cin >> optiune;
 	switch (optiune)
@@ -80,15 +143,16 @@ void Bank::adaugareCont()
 void Bank::vizualizareConturi()
 {
 	system("CLS");
-	std::cout << "Numarul de conturi in banca este: " << m_ConturiBancare.size() << "\n";
+	std::cout << "Numarul de conturi in banca este: " << m_ConturiBancare.size() << "\n\n";
 	for (int i = 0; i < m_ConturiBancare.size(); i++)
 	{
 		std::cout << "Contul " << i + 1 << ": " << m_ConturiBancare[i]->getNume() + " " + m_ConturiBancare[i]->getPrenume() << "\n";
-		std::cout << "Contul IBAN aferent este: " << m_ConturiBancare[i]->getIBAN() << "\n";
+		std::cout << "Contul IBAN aferent este: " << m_ConturiBancare[i]->getIBAN() << "\n\n";
 	}
 	std::cout << "Finalizare operatiune! Apasa tasta aferenta optiunii dorite:\n";
 	std::cout << "1 -> pentru creearea unui cont.\n";
 	std::cout << "2 -> pentru meniul principal.\n";
+
 	char optiune;
 	std::cin >> optiune;
 	switch (optiune)
@@ -104,25 +168,17 @@ void Bank::vizualizareConturi()
 void Bank::modificareCont()
 {
 	system("CLS");
-	//intrebati operatorul ce cont doreste sa modifice
+	std::cin.ignore();
+
+	//intrebam operatorul ce cont doreste sa modifice
 	std::cout << "Introduceti numele de familie:\n";
 	std::string nume;
-	std::cin >> nume;
+	std::getline(std::cin, nume);
 	std::cout << "Introduceti prenumele:\n";
 	std::string prenume;
-	std::cin >> prenume;
-	ContBancar* temp = nullptr;
-	/*int foundIndex = 0;*/
-	/*for (int i = 0; i < m_ConturiBancare.size(); i++)
-	{
-		if (nume == m_ConturiBancare[i]->getNume() && prenume == m_ConturiBancare[i]->getPrenume())
-		{
-			temp = m_ConturiBancare[i];
-			foundIndex = i;
-			break;
-		}
+	std::getline(std::cin, prenume);
 
-	}*/
+	ContBancar* temp = nullptr;
 	std::vector<ContBancar*>::iterator it;
 	for (it = m_ConturiBancare.begin(); it != m_ConturiBancare.end(); it++)
 	{
@@ -137,9 +193,9 @@ void Bank::modificareCont()
 	{
 		std::cout << "Contul nu a fost gasit!\n";
 		std::cout << "Apasa tasta aferenta optiunii dorite:\n";
-		std::cout << "1 - Intoarecere la meniul principla\n";
-		std::cout << "2 - Creati un cont nou\n";
-		std::cout << "3 - Cautati un alt cont\n";
+		std::cout << "1 - Intoarecere la meniul principal.\n";
+		std::cout << "2 - Creati un cont nou.\n";
+		std::cout << "3 - Cautati un alt cont.\n";
 		char optiune;
 		std::cin >> optiune;
 		switch (optiune)
@@ -159,21 +215,73 @@ void Bank::modificareCont()
 	}
 	else
 	{
-		//tema:
-		std::cout << "Ce modificari vreti sa faceti?\n";
+		std::cout << "Ce modificare doriti sa faceti?\n";
 		std::cout << "Apasa tasta aferenta optiunii dorite:\n";
 		std::cout << "1 - Modificare nume\n";
 		std::cout << "2 - Modificare prenume\n";
 		std::cout << "3 - Modificare etc.\n";
-		std::cout << "6 - Stergeti contul gasit\n";
+		std::cout << "4 - Stergeti contul indicat.\n";
+		std::cout << "5 - Intoarcere la meniul principal.\n";
 		char optiune;
 		std::cin >> optiune;
-		m_ConturiBancare.erase(it);
-
+		std::string modificare;
+		bool modificareValida = false;
+		switch (optiune)
+		{
+		case'1':
+			system("CLS");
+			std::cin.ignore();
+			while (modificareValida == false)
+			{
+				std::cout << "Introduceti modificarea dorita (folositi doar litere din alfabetul latin):\n";
+				std::getline(std::cin, modificare);
+				for (int i = 0; i < modificare.length(); ++i)
+				{
+					if ((modificare[i] >= 'A' && modificare[i] <= 'Z') || (modificare[i] >= 'a' && modificare[i] <= 'z') || (modificare[i] == ' ' || modificare[i] == '-'))
+						modificareValida = true;
+					else
+					{
+						std::cout << "Numele nu este valid!\n";
+						modificareValida = false;
+						break;
+					}
+				}
+			}
+			temp->setNume(modificare);
+			std::cout << "Operatiune finalizata cu succes!\n";
+			Sleep(1500);
+			break;
+		case'2':
+			system("CLS");
+			std::cin.ignore();
+			while (modificareValida == false)
+			{
+				std::cout << "Introduceti modificarea dorita (folositi doar litere din alfabetul latin):\n";
+				std::getline(std::cin, modificare);
+				for (int i = 0; i < modificare.length(); ++i)
+				{
+					if ((modificare[i] >= 'A' && modificare[i] <= 'Z') || (modificare[i] >= 'a' && modificare[i] <= 'z') || (modificare[i] == ' ' || modificare[i] == '-'))
+						modificareValida = true;
+					else
+					{
+						std::cout << "Prenumele nu este valid!\n";
+						modificareValida = false;
+						break;
+					}
+				}
+			}
+			temp->setPrenume(modificare);
+			std::cout << "Operatiune finalizata cu succes!\n";
+			Sleep(1500);
+			break;
+		case'4':
+			system("CLS");
+			m_ConturiBancare.erase(it);
+			std::cout << "Operatiune finalizata cu succes!\n";
+			Sleep(1500);
+			break;
+		default:
+			break;
+		}
 	}
-
-	//cautati contul
-		//daca exista - intrebat ce modificare doreste
-		//daca nu exista - anuntam ca nu exista si dam urm optiuni: return to main / creati un cont / cautati alt cont
-
 }
