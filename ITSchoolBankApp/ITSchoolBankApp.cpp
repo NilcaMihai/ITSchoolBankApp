@@ -1,24 +1,48 @@
 #include <iostream>
 #include "Bank.h"
 #include <windows.h>
+#include <fstream>
 
 int main()
 {
-    //instantam o banca
+   /* std::ofstream test("BazeDeDate.csv");
+    test << "Test\n";
+    test << "1\n";
+    test << "2\n";
+    test.close();
+
+    std::ifstream testCitire("BazeDeDate.csv");
+    if (!testCitire.is_open())
+    {
+        std::cout << "Fisierul nu poate fi deschis!\n";
+    }
+    if (testCitire.good())
+    {
+        std::string line;
+        while (std::getline(testCitire, line))
+        {
+            std::cout << line << "\n";
+        }
+    }
+    testCitire.close();*/
+
     Bank* itSchoolBank = new Bank();
 
     std::string userOK = "Administrator";
     std::string parolaOK = "Banca";
+    
+    std::cout << "Buna ziua!\n";
     bool acces = false;
-
     for (int i = 2; i >= 0; --i)
     {
-        std::cout << "Introdu userul:\n";
+        std::cout << "Va rugam introduceti userul: \n";
         std::string user;
         std::cin >> user;
-        std::cout << "Introdu parola:\n";
+        system("CLS");
+        std::cout << "Va rugam introduceti parola:\n";
         std::string parola;
         std::cin >> parola;
+        system("CLS");
         if (user == userOK && parola == parolaOK)
         {
             acces = true;
@@ -74,7 +98,7 @@ int main()
                 break;
             case '9':
                 system("CLS");
-                std::cout << "Thank you!";
+                std::cout << "La revedere!\n";
                 isRunning = false;
                 break;
 
@@ -84,9 +108,6 @@ int main()
             }
         } while (isRunning);
     }
-
-   /* itSchoolBank->adaugareCont();
-    itSchoolBank->vizualizareConturi();*/
 
     delete itSchoolBank;
 }

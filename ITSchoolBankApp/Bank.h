@@ -13,6 +13,8 @@ public:
 	void adaugareCont();
 	void vizualizareConturi();
 	void modificareCont();
+	TIP_CONT alegeMoneda();
+	//sa facem o clasa FileManager cu 2 metode care sa putem citi si sa scriem in CSV
 
 };
 

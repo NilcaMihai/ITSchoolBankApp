@@ -6,5 +6,5 @@ ContBancar::ContBancar(std::string Nume, std::string Prenume, std::string iban)
 	this->Prenume = Prenume;
 	IBAN = iban;
 	sold = 0;
-	eTipCont = TIP_CONT::CONT_RON;
+	TIP_CONT Moneda = TIP_CONT::CONT_RON;
 }
