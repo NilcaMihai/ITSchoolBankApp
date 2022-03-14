@@ -5,27 +5,6 @@
 
 int main()
 {
-   /* std::ofstream test("BazeDeDate.csv");
-    test << "Test\n";
-    test << "1\n";
-    test << "2\n";
-    test.close();
-
-    std::ifstream testCitire("BazeDeDate.csv");
-    if (!testCitire.is_open())
-    {
-        std::cout << "Fisierul nu poate fi deschis!\n";
-    }
-    if (testCitire.good())
-    {
-        std::string line;
-        while (std::getline(testCitire, line))
-        {
-            std::cout << line << "\n";
-        }
-    }
-    testCitire.close();*/
-
     Bank* itSchoolBank = new Bank();
 
     std::string userOK = "Administrator";

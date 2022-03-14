@@ -171,8 +171,6 @@ void Bank::modificareCont()
 {
 	system("CLS");
 	std::cin.ignore();
-
-	//intrebam operatorul ce cont doreste sa modifice
 	std::cout << "Introduceti numele de familie:\n";
 	std::string nume;
 	std::getline(std::cin, nume);
