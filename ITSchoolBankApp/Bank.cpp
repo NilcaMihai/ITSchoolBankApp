@@ -120,7 +120,8 @@ void Bank::adaugareCont()
 	}
 
 	std::string iban = createIban();
-	ContBancar* cont = new ContBancar(nume, prenume, iban);
+	float Sold = 0;
+	ContBancar* cont = new ContBancar(nume, prenume, iban, Sold);
 	m_ConturiBancare.push_back(cont);
 
 	system("CLS");
@@ -147,7 +148,8 @@ void Bank::vizualizareConturi()
 	for (int i = 0; i < m_ConturiBancare.size(); i++)
 	{
 		std::cout << "Contul " << i + 1 << ": " << m_ConturiBancare[i]->getNume() + " " + m_ConturiBancare[i]->getPrenume() << "\n";
-		std::cout << "Contul IBAN aferent este: " << m_ConturiBancare[i]->getIBAN() << "\n\n";
+		std::cout << "Contul IBAN aferent este: " << m_ConturiBancare[i]->getIBAN() << "\n";
+		std::cout << "Soldul disponibil este: " << m_ConturiBancare[i]->getSold() << "\n\n";
 	}
 	std::cout << "Finalizare operatiune! Apasa tasta aferenta optiunii dorite:\n";
 	std::cout << "1 -> pentru creearea unui cont.\n";
@@ -215,17 +217,20 @@ void Bank::modificareCont()
 	}
 	else
 	{
+		system("CLS");
 		std::cout << "Ce modificare doriti sa faceti?\n";
 		std::cout << "Apasa tasta aferenta optiunii dorite:\n";
 		std::cout << "1 - Modificare nume\n";
 		std::cout << "2 - Modificare prenume\n";
-		std::cout << "3 - Modificare etc.\n";
-		std::cout << "4 - Stergeti contul indicat.\n";
-		std::cout << "5 - Intoarcere la meniul principal.\n";
+		std::cout << "3 - Adaugare numerar\n";
+		std::cout << "4 - Retragere numerar\n";
+		std::cout << "5 - Stergeti contul indicat.\n";
+		std::cout << "6 - Intoarcere la meniul principal.\n";
 		char optiune;
 		std::cin >> optiune;
 		std::string modificare;
 		bool modificareValida = false;
+		float contCurent = temp->getSold();
 		switch (optiune)
 		{
 		case'1':
@@ -274,7 +279,34 @@ void Bank::modificareCont()
 			std::cout << "Operatiune finalizata cu succes!\n";
 			Sleep(1500);
 			break;
+		case'3':
+			system("CLS");
+			float depunere;
+			std::cout << "Introduceti suma pe care doriti sa o depuneti in cont:\n";
+			std::cin >> depunere;
+			temp->setSoldValue(contCurent + depunere);
+			std::cout << "Operatiune finalizata cu succes!\n";
+			Sleep(1500);
+			break;
 		case'4':
+			system("CLS");
+			float retragere;
+			std::cout << "Introduceti suma pe care doriti sa o retrageti din cont:\n";
+			std::cin >> retragere;
+			if (retragere > contCurent)
+			{
+				std::cout << "Fonduri insuficiente!\n";
+				Sleep(1500);
+				break;
+			}
+			else
+			{
+				temp->setSoldValue(contCurent - retragere);
+				std::cout << "Operatiune finalizata cu succes!\n";
+				Sleep(1500);
+				break;
+			}
+		case'5':
 			system("CLS");
 			m_ConturiBancare.erase(it);
 			std::cout << "Operatiune finalizata cu succes!\n";
